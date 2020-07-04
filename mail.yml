@@ -1,0 +1,16 @@
+- hosts: localhost
+  tasks:
+    - include_vars: "/ws/secret.yml"
+    
+    - command: "/ws/photo.py"    
+
+    - mail: 
+       body: "ansible has sent you the photo of security breacher"
+       from: "hemantjajoo0@gmail.com"
+       username: "hemantjajoo0@gmail.com"
+       password: "{{ password }}"
+       subject: This person was trying to compromise with your system security
+       to : "hemantjajoo3@gmail.com"
+       host: smtp.gmail.com
+       port: 587
+       attach: "/ws/defaulter.jpg"
