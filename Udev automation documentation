@@ -1,0 +1,36 @@
+Udev - automation
+
+1).First you need to create udev rule  so that when you add a pendrive a  program will be triggered
+Go to ---> cd /etc/udev/rules.d
+Create your rule in here
+vim usbmount.rules
+ACTION=="add", KERNEL=="sd?", TAG+="systemd", SUBSYSTEMS=="usb", RUN+="/usr/bin/systemctl --no-block start hemant.service"
+Save this file -->filename.rules (extension .rules is must)
+
+2).Now you need to create your service 
+go to---->cd /etc/systemd/system
+vim servicename.service
+:[Unit]
+Description=UdevTrigger
+BindsTo=dev-%i.device
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/usbdevinserted.sh            (Give path of file to be executed)
+
+3)vim /usr/bin/usbdevinserted.sh
+#!/usr/bin/bash  (ADD THE SHEBANG HERE to make file executable)
+python36  /root/Desktop/mail.py 
+(You can write command to run your python file)
+
+4)Make the file to be executed whose path you have given as executable
+chmod +x file_path
+Example :  chmod +x /usr/bin/usbdevinserted.sh 
+
+
+5).As you have added a new service you need to update your daemon:
+systemctl daemon-reload
+udevadm control --reload 
+(if you do the reboot even then the services will be updated )
+
+Now when you will attach your pendrive ...... your script will run
